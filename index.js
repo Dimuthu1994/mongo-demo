@@ -1,8 +1,5 @@
 const mongoose = require("mongoose");
 
-main();
-createCourse();
-
 async function main() {
   try {
     await mongoose.connect("mongodb://localhost:27017/test");
@@ -12,16 +9,18 @@ async function main() {
   }
 }
 
+main();
+const courseSchema = new mongoose.Schema({
+  name: String,
+  author: String,
+  tags: [String],
+  date: { type: Date, default: Date.now },
+  isPublished: Boolean,
+});
+// this is a class
+const Course = mongoose.model("Course", courseSchema);
+
 async function createCourse() {
-  const courseSchema = new mongoose.Schema({
-    name: String,
-    author: String,
-    tags: [String],
-    date: { type: Date, default: Date.now },
-    isPublished: Boolean,
-  });
-  // this is a class
-  const Course = mongoose.model("Course", courseSchema);
   const course = new Course({
     name: "Angularjs",
     author: "mosh",
@@ -32,3 +31,5 @@ async function createCourse() {
   const result = await course.save();
   console.log(result);
 }
+
+createCourse();
