@@ -11,7 +11,7 @@ async function main() {
 
 main();
 const courseSchema = new mongoose.Schema({
-  name: String,
+  name: { type: String, required: true },
   author: String,
   tags: [String],
   date: { type: Date, default: Date.now },
@@ -22,14 +22,22 @@ const Course = mongoose.model("Course", courseSchema);
 
 async function createCourse() {
   const course = new Course({
-    name: "Angularjs",
+    //name: "Angularjs",
     author: "mosh",
     tags: ["angular", "frontend"],
     isPublished: true,
   });
+  try {
+    const result = await course.save();
+    console.log(result);
+  } catch (error) {
+    console.log(error.message);
+  }
+}
 
-  const result = await course.save();
-  console.log(result);
+async function getCourse() {
+  const courses = await Course.find();
+  console.log(courses);
 }
 
 createCourse();
