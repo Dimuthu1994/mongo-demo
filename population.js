@@ -54,10 +54,12 @@ async function createCourse(name, author) {
 }
 
 async function listCourses() {
-  const courses = await Course().find().select("name");
+  const courses = await Course.find()
+    .populate("author", "name -_id")
+    .select("name author");
   console.log(courses);
 }
 
-createCourse("node course", "619657ddce08371be0c4d82d");
+//createCourse("node course", "619657ddce08371be0c4d82d");
 //createAuthor("Mosh", "My bio", "My web");
-//listCourses();
+listCourses();
